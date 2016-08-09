@@ -1,4 +1,4 @@
-import { observable, autorun } from 'mobx';
+import { observable, autorun, computed } from 'mobx';
 
 export default class TodoStore {
   @observable list: Todo[] = [];
@@ -9,6 +9,15 @@ export default class TodoStore {
 
   add(newTodo: string) {
     this.list.push(new Todo(newTodo));
+  }
+
+  @computed get completedTasks(): number {
+    return this.list.reduce((prev, curr) => {
+      if (curr.completed) {
+        return prev + 1;
+      }
+      return prev;
+    }, 0);
   }
 
 }
